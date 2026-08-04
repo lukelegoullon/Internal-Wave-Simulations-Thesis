@@ -1,0 +1,32 @@
+%We run simulations of ISWs of Depression and Elevation over Depressions of
+%Varying Thicknesses
+
+%Important variables, set to Stastna's values:
+%Depth (m) and reference density (kg/m^3);\
+H = 0.2;
+ref_density = 10^3;
+
+%First and second pycnocline centers (m), thickeness(m), and change in dens (kg/m^3)
+z_1 = -0.05; d_1 = 0.01; delta_rho_1 = 0.04;
+z_2 = -0.19; d_2 = 0.003; delta_rho_2 = 0.008;
+
+%Density:
+rho = @(z) 1 - delta_rho_1/2 * tanh((z-z_1) / d_1) - delta_rho_2/2*tanh((z-z_2)/d_2);
+
+%Plot Density:
+z = linspace(0, -H, 500);
+rho_z = rho(z);
+
+figure;
+plot(rho_z, z, 'LineWidth', 1.5);
+xlabel('\rho');
+ylabel('z');
+ylim([-H 0]);
+grid on;
+
+%Bottom topography
+h_dep = 1; %max depth of depression
+w_dep = 1; %governs the width of the depression
+c_dep = 1; %Center of the depression
+
+depression = h_dep
