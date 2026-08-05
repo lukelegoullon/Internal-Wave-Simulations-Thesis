@@ -1,3 +1,6 @@
 [submodule "external/DJLES"]
 	path = external/DJLES
 	url = https://github.com/mdunphy/DJLES.git
+[submodule "external/SPINS"]
+	path = external/SPINS
+	url = https://git.uwaterloo.ca/SPINS/SPINS_main.git
