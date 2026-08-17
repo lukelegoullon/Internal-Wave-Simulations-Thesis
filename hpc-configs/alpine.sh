@@ -10,7 +10,6 @@
 #   module load openmpi/5.0.6
 #   module load fftw boost openblas
 
-#Note, on github I can not store this in SPINS codebase. Before executing ./makemake.sh alpine, cp the file to systems.
 CC=gcc
 CXX=g++
 LD=mpic++
@@ -63,9 +62,12 @@ FFTW_INCDIR="/curc/sw/install/fftw/3.3.10/openmpi/5.0.6/gcc/14.2.0/include"
 UMF_INCDIR=
 UMF_LIBDIR=
 
-# Location/library for BLAS -- left blank on purpose. OpenBLAS (set
-# above under LAPACK_LIB) already provides BLAS symbols; setting this
-# too would just link -lopenblas twice.
-BLAS_LIB=
-BLAS_LIBDIR=
-BLAS_INCDIR=
+# Location/library for BLAS. NOTE: even though OpenBLAS provides both
+# LAPACK and BLAS symbols, UMFPACK's build (make_deps.sh) substitutes
+# BLAS_LIB and LAPACK_LIB into two SEPARATE Makefile variables (BLAS=
+# and LAPACK=) rather than combining them -- leaving this blank left
+# UMFPACK's BLAS= line empty, causing undefined references to dtrsv_,
+# dgemv_, dtrsm_, dgemm_, dger_ at link time. Must match LAPACK_LIB below.
+BLAS_LIB="-lopenblas"
+BLAS_LIBDIR="/curc/sw/install/openblas/0.3.28/gcc/14.2.0/lib"
+BLAS_INCDIR="/curc/sw/install/openblas/0.3.28/gcc/14.2.0/include"
