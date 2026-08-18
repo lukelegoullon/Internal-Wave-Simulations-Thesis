@@ -27,8 +27,12 @@ SYSTEM_LDFLAGS="-Wl,-rpath,/curc/sw/install/openblas/0.3.28/gcc/14.2.0/lib"
 DEBUG_CFLAGS="-g -DBZ_DEBUG"
 DEBUG_LDFLAGS="-g -DBZ_DEBUG"
 
-# Compiler flags for optimization
-OPTIM_CFLAGS="-O3 -march=native"
+# Compiler flags for optimization. Deliberately NOT using -march=native:
+# Alpine's compute nodes are heterogeneous (different CPU generations from
+# different contributors), and a binary compiled with -march=native on one
+# node can crash with "illegal instruction" if the batch job later lands
+# on a different node. Plain -O3 runs correctly on any Alpine node.
+OPTIM_CFLAGS="-O3"
 OPTIM_LDFLAGS=$OPTIM_CFLAGS
 
 # Compiler flags for extra optimization (left blank for now -- get a
