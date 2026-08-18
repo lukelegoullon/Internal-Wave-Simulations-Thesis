@@ -44,19 +44,25 @@ MPI_LIB=
 MPI_LIBDIR=
 MPI_INCDIR=
 
-# Library names/locations for LAPACK (OpenBLAS provides both LAPACK and BLAS)
+# Library names/locations for LAPACK (OpenBLAS provides both LAPACK and BLAS).
+# NOTE: make_deps.sh substitutes these RAW into UFconfig.mk (no automatic
+# -I/-L prefixing), e.g. "LAPACK = ${LAPACK_INCDIR} ${LAPACK_LIBDIR} ${LAPACK_LIB}"
+# -- so INCDIR/LIBDIR must already contain the -I/-L flags themselves, or
+# the linker will try to treat the bare directory path as an input file.
 LAPACK_LIB="-lopenblas"
-LAPACK_LIBDIR="/curc/sw/install/openblas/0.3.28/gcc/14.2.0/lib"
-LAPACK_INCDIR="/curc/sw/install/openblas/0.3.28/gcc/14.2.0/include"
+LAPACK_LIBDIR="-L/curc/sw/install/openblas/0.3.28/gcc/14.2.0/lib"
+LAPACK_INCDIR="-I/curc/sw/install/openblas/0.3.28/gcc/14.2.0/include"
 
 # Library locations for blitz; leave blank to use system-installed
 # or compiled-with-this-package version
 BLITZ_LIBDIR=
 BLITZ_INCDIR=
 
-# Library locations for fftw
-FFTW_LIBDIR="/curc/sw/install/fftw/3.3.10/openmpi/5.0.6/gcc/14.2.0/lib"
-FFTW_INCDIR="/curc/sw/install/fftw/3.3.10/openmpi/5.0.6/gcc/14.2.0/include"
+# Library locations for fftw. Prefixed with -I/-L for the same reason as
+# LAPACK/BLAS above; also, the fftw module does not export CPATH, so an
+# unprefixed bare path would not even be picked up implicitly by gcc.
+FFTW_LIBDIR="-L/curc/sw/install/fftw/3.3.10/openmpi/5.0.6/gcc/14.2.0/lib"
+FFTW_INCDIR="-I/curc/sw/install/fftw/3.3.10/openmpi/5.0.6/gcc/14.2.0/include"
 
 # Library locations for UMFPACK
 UMF_INCDIR=
@@ -67,7 +73,7 @@ UMF_LIBDIR=
 # BLAS_LIB and LAPACK_LIB into two SEPARATE Makefile variables (BLAS=
 # and LAPACK=) rather than combining them -- leaving this blank left
 # UMFPACK's BLAS= line empty, causing undefined references to dtrsv_,
-# dgemv_, dtrsm_, dgemm_, dger_ at link time. Must match LAPACK_LIB below.
+# dgemv_, dtrsm_, dgemm_, dger_ at link time. Must match LAPACK_LIB above.
 BLAS_LIB="-lopenblas"
-BLAS_LIBDIR="/curc/sw/install/openblas/0.3.28/gcc/14.2.0/lib"
-BLAS_INCDIR="/curc/sw/install/openblas/0.3.28/gcc/14.2.0/include"
+BLAS_LIBDIR="-L/curc/sw/install/openblas/0.3.28/gcc/14.2.0/lib"
+BLAS_INCDIR="-I/curc/sw/install/openblas/0.3.28/gcc/14.2.0/include"
