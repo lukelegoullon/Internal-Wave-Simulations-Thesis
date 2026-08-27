@@ -5,15 +5,15 @@
 #SBATCH --time=00:30:00
 #SBATCH --partition=acpu
 #SBATCH --qos=cpu-normal
+#SBATCH --chdir=/home/lule1957/Internal-Wave-Simulations-Thesis/external/SPINS/src/cases/gravity_current
 #SBATCH --output=gravity_current.%j.out
 #SBATCH --mail-type=END,FAIL
 #SBATCH --mail-user=lule1957@colorado.edu
 
 module purge
 
-source ../hpc_configs/env-setup.sh
+source /home/lule1957/Internal-Wave-Simulations-Thesis/hpc-configs/env_setup.sh
 
-echo "== This is the scripting step! =="
-sleep 30
-/home/lule1957/Internal-Wave-Simulations-Thesis/external/SPINS/src/cases/gravity_current/gravity_current.x
+echo "== Starting gravity_current =="
+mpirun -np $SLURM_NTASKS ./gravity_current.x
 echo "== End of Job =="
