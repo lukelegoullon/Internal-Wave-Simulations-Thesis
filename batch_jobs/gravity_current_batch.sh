@@ -12,7 +12,12 @@
 
 module purge
 
-source /home/lule1957/Internal-Wave-Simulations-Thesis/hpc-configs/env_setup.sh
+module load gcc/14.2.0
+module load openmpi/5.0.6
+module load fftw
+module load boost
+module load openblas
+module load cmake   # only needed if rebuilding dependencies (make_deps.sh)
 
 echo "== Starting gravity_current =="
 mpirun -np $SLURM_NTASKS ./gravity_current.x
