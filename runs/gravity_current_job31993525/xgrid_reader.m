@@ -1,0 +1,47 @@
+function ar = xgrid_reader(xrange,zrange)
+%xgrid_reader - SPINS data reader with slab support
+% Opens and reads a slab of SPINS data, optionally
+% loading only a portion of the total array. This
+% functionality is most useful when only a portion
+%  of a large, 3D array is needed.
+%
+% Usage:
+%   slab = xgrid_reader(xrange,zrange);
+% Where xrange and zrange are the ranges
+% of the array to be read.
+% Empty values, [], and : each imply reading the
+% full dimension.
+
+% Version 1.1, July 09 2012.  Original general
+% MATLAB code provided courtesy of Michael Dunphy
+% (mdunphy@uwaterloo.ca), adapted for SPINS by 
+% Christopher Subich (csubich@uwaterloo.ca).
+
+% Sanitize the ranges:
+if (~exist('xrange') || isempty(xrange) || strcmp(xrange,':')) xrange = [1:256]; end;
+yrange = [1];
+if (~exist('zrange') || isempty(zrange) || strcmp(zrange,':')) zrange = [1:128]; end;
+xrange(xrange < 1) = []; xrange(xrange > 256) = [];
+yrange(yrange < 1) = []; yrange(yrange > 1) = [];
+zrange(zrange < 1) = []; zrange(zrange > 128) = [];
+
+% Define ranges in file-ordering
+ranges = {xrange,yrange,zrange};
+ranges = ranges([2,3,1]);
+% Output file name:
+fname = 'xgrid';
+
+% memmap the file for reading
+m = memmapfile(fname, 'Offset',0, ...
+   'Format', {'double' [1,128,256] 'x'}, ...
+   'Writable',false);
+
+% Extract the data and clear the memmap
+ar = m.Data.x(ranges{1},ranges{2},ranges{3}); clear m
+
+% Permute, check endianness, and return
+ar = squeeze(ipermute(ar,[2,3,1]));
+[~,~,endian] = computer();
+if (~isequal(endian,'L'))
+   ar = swapbytes(ar);
+end

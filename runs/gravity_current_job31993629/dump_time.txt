@@ -1,0 +1,4 @@
+The dump 'time' was:
+100
+The dump index was:
+50
