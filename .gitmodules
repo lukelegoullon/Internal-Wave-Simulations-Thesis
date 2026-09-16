@@ -4,3 +4,6 @@
 [submodule "external/SPINS"]
 	path = external/SPINS
 	url = https://git.uwaterloo.ca/SPINS/SPINS_main.git
+[submodule "external/SPINSmatlab"]
+	path = external/SPINSmatlab
+	url = https://github.com/ddeepwell/SPINSmatlab.git
